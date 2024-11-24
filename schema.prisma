@@ -1,0 +1,65 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator db {
+  provider             = "prisma-client-py"
+  interface            = "asyncio"
+  recursive_type_depth = 5
+}
+
+model Wallet {
+  walledId                BigInt  @id
+  win_rate_percent        BigInt?
+  gain_percent            BigInt?
+  loss_percent            BigInt?
+  net_pnl                 BigInt?
+  avg_roi                 BigInt?
+  risk_adjusted_return    BigInt?
+  new_column              BigInt?
+  number_of_trades        BigInt?
+  size_of_trades          BigInt?
+  trade_frequency         BigInt?
+  max_drawdown            BigInt?
+  win_loss_ratio          BigInt?
+  exposure_to_volatility  BigInt?
+  total_transaction_fees  BigInt?
+  avg_fee_per_trade       BigInt?
+  slippage                BigInt?
+  token_diversity         BigInt?
+  wallet_growth           BigInt?
+  holding_period          BigInt?
+  trade_times             BigInt?
+
+  Transactions Transactions[]
+}
+
+model Transactions {
+  signature   String   @id
+  description String
+  type        String
+  source      String
+  fee         BigInt
+  feePayer    String
+  slot        BigInt
+  timestamp   BigInt
+  walletId    BigInt
+
+  Wallet      Wallet   @relation(fields: [walletId], references: [walledId])
+  TokenTransfer TokenTransfer[]
+}
+
+model TokenTransfer {
+  id               BigInt  @id @default(autoincrement())
+  fromTokenAccount String
+  toTokenAccount   String
+  fromUserAccount  String
+  toUserAccount    String
+  tokenAmount      BigInt
+  mint             String
+  tokenStandard    String
+  signature        String
+
+  Transactions     Transactions @relation(fields: [signature], references: [signature])
+}
