@@ -10,7 +10,7 @@ generator db {
 }
 
 model Wallet {
-  walledId                BigInt  @id
+  walletId                String  @id
   win_rate_percent        BigInt?
   gain_percent            BigInt?
   loss_percent            BigInt?
@@ -44,9 +44,9 @@ model Transactions {
   feePayer    String
   slot        BigInt
   timestamp   BigInt
-  walletId    BigInt
+  walletId    String
 
-  Wallet      Wallet   @relation(fields: [walletId], references: [walledId])
+  Wallet      Wallet   @relation(fields: [walletId], references: [walletId])
   TokenTransfer TokenTransfer[]
 }
 

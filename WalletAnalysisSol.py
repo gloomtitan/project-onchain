@@ -50,8 +50,6 @@ def save_holders_to_file(holders, filename):
     except IOError as e:
         print(f"Error writing to file {filename}: {e}")
 
-import requests
-import json
 
 def get_transaction_history(walletId):
     url = f"https://api.helius.xyz/v0/addresses/{walletId}/transactions?api-key={API_KEY}"
@@ -75,18 +73,6 @@ def get_transaction_history(walletId):
     # Convert cleaned string back to JSON
     data = json.loads(f"[{cleaned_data}]")  # Adding brackets back for valid JSON array
 
-    filteredData = {
-        walletId: {
-            "description": data.get("description"),
-            "type": data.get("type"),
-            "fee": data.get("fee"),
-            "feePayer": data.get("feePayer"),
-            "signature": data.get("signature"),
-            "timestamp": data.get("timestamp"),
-            "tokenTransfers": data.get("tokenTransfers"),
-            "accountData": data.get("accountData"),
-        }
-    }
     # Write the cleaned JSON to a file
     with open("walletData.json", "w") as f:
         json.dump(data, f, indent=4)
@@ -353,6 +339,8 @@ def fetch_wallet_transactions(wallets):
         executor.map(process_wallet, wallets)
 
     return wallet_transactions
+
+
 
 
 def save_to_file(data, output_file):
