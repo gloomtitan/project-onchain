@@ -93,7 +93,14 @@ async def populate_wallet_and_transactions(file_path, wallet_id):
     finally:
         await db.disconnect()
 
+async def readWallet(filepath):
+    with open(filepath, 'r') as file:
+        for walletId in file:
+            walletId =walletId.strip()
+            if walletId:
+                await populate_wallet_and_transactions("./walletData.json", walletId)
+
 
 # Run the function
 if __name__ == "__main__":
-    asyncio.run(populate_wallet_and_transactions("./walletData.json","4kfaWFh13XurM75WjTdgox8ZZ5vcQzGAZdaNiz7m55mZ"))
+    asyncio.run(readWallet("./walletData.json"))
